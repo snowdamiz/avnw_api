@@ -19,9 +19,16 @@
   },
   "homepage": "https://github.com/120356aa/avnw_api#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "helmet": "^4.1.1"
+    "faker": "^5.1.0",
+    "helmet": "^4.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.6",
+    "pg": "^8.4.1",
+    "request": "^2.88.2",
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
