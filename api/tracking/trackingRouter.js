@@ -3,10 +3,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const { jwtKey } = require('../../auth/authenticate.js');
-const userRouter = express.Router();
+const trackingRouter = express.Router();
 
-userRouter.get('/', (req, res) => {
-  res.send('users');
+trackingRouter.get('/', (req, res) => {
+  res.send('tracking');
 });
 
-module.exports = userRouter;
+module.exports = trackingRouter;

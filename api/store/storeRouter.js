@@ -3,7 +3,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const { jwtKey } = require('../../auth/authenticate.js');
-const db = require('./storeHelper.js');
 const storeRouter = express.Router();
+
+storeRouter.get('/', (req, res) => {
+  res.send('store');
+});
 
 module.exports = storeRouter;
