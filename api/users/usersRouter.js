@@ -3,9 +3,8 @@ const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 
-const { jwtKey, generateToken, protect } = require('../../auth/authenticate.js');
+const { generateToken, protect } = require('../../auth/authenticate.js');
 const DB = process.env.DB_URL;
 const userRouter = express.Router();
 
@@ -72,12 +71,14 @@ userRouter.get('/:id', protect, async (req, res) => {
   let id = req.params.id;
 
   try {
-    const user = await User.findAll({ 
-      where: { id: id }
-    });
-    res.status(200).json(user);
+    const user = await User.findAll({ where: { id: id }});
+    res
+      .status(200)
+      .json(user)
   } catch (err) {
-    res.status(500).json(err)
+    res
+      .status(500)
+      .json(err)
   }
 });
 // -------------
@@ -89,25 +90,28 @@ userRouter.post('/register', async (req, res) => {
   if (body) {
     const hash = bcrypt.hashSync(body.password, 10);
     body.password = hash;
+
     try {
-      const newUser = await User.create({
-        name: body.name,
-        email: body.email,
-        password: body.password,
-        phone: body.phone,
-        address: body.address,
-        city: body.city,
-        state: body.state,
-        zip: body.zip,
-        account_type: body.account_type,
-        createdAt: new Date()
-    });
-      res.status(200).json(newUser);
+      const newUser = await User.create(body);
+      if (newUser) {
+        const token = generateToken(newUser);
+        res
+          .status(200)
+          .json({ token, newUser }); 
+      } else {
+        res
+          .status(500)
+          .json({ err: 'Unable to create user' })
+      }
     } catch (err) {
-      res.status(500).json(err);
+      res
+        .status(500)
+        .json(err);
     }
   } else {
-    res.status(500).json({ err: 'Provide an email and password' });
+    res
+      .status(500)
+      .json({ err: 'Provide an email and password' });
   }
 });
 
@@ -125,16 +129,78 @@ userRouter.post('/login', async (req, res) => {
     if (user && bcrypt.compareSync(auth.password, user[0].password)) {
       try {
         const token = await generateToken(user);
-        res.status(200).json({ token, message: 'Logged In' })
+        res
+          .status(200)
+          .json({ token, message: 'Logged In' })
       } catch (err) {
-        res.status(401).json({ err: err })
+        res
+          .status(401)
+          .json({ err: err })
       }
     } else {
-      res.status(500).json({ err: 'Password incorrect' })
+      res
+        .status(500)
+        .json({ err: 'Password incorrect' })
     }
   } else {
-    res.status(500).json({ err: 'Provide an email and password' })
+    res
+      .status(500)
+      .json({ err: 'Provide an email and password' })
   }
 });
+
+// --------------
+// Edit User Info
+// --------------
+userRouter.put('/:id', protect, async (req, res) => {
+  let id = req.params.id;
+  let edit = req.body;
+
+  try {
+    const getUser = await User.findAll({ where: { id: id }});
+    if (getUser) {
+      const editUser = await User.update(edit, { where: { id: id }})
+      res
+        .status(202)
+        .json(editUser)
+    } else {
+      res
+        .status(404)
+        .json({ err: 'User Does not Exist' })
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ err: err })
+  }
+});
+
+// -----------
+// DELETE USER
+// -----------
+userRouter.put('/:id', protect, async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const getUser = await User.findAll({ where: { id: id }});
+    if (getUser) {
+      const deletedUser = await User.update({
+        deletedAt: new Date()}, {
+        where: { id: id }
+      })
+      res
+        .status(202)
+        .json(deletedUser);
+    } else {
+      res
+        .status(404)
+        .json({ err: 'User not found' })
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ err: err });
+  }
+})
 
 module.exports = userRouter;
