@@ -3,7 +3,16 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class users extends Model {
     static associate(models) {
-      
+      users.associate = models => {
+        users.hasMany(models.tracking, {
+          foreignKey: {
+            name: 'user_id',
+            allowNull: false,
+          },
+          onDelete: 'cascade',
+          onUpdate: 'cascade'
+        })
+      }
     }
   };
   users.init({

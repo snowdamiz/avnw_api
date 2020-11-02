@@ -26,19 +26,17 @@ const corsOptions = {
 
 const app = express();
 
-// const sequelize = new Sequelize(DB);
-
 // Server Init
 app.use(
   express.json(),
   cors(corsOptions),
   helmet(),
-  morgan('common')
+  morgan('dev')
 );
 
 // Routes
-app.use('/services', servicesRouter);
 app.use('/user', userRouter);
+app.use('/services', servicesRouter);
 app.use('/photographers', photographersRouter);
 app.use('/store', storeRouter);
 app.use('/tracking', trackingRouter);

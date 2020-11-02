@@ -1,30 +1,35 @@
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 require('dotenv').config();
 
 const jwtKey = process.env.JWT_SECRET;
 
 function protect (req, res, next) {
   const token = req.headers.authorization;
+
   if ( token ) {
     jwt.verify(token, jwtKey, (err, decodedToken) => {
       if (err) {
-        res
-            .status(401)
-            .json({ message: 'Invalid token.'});
-      }
-      else {
-        next();
-      }
+        res.status(401).json({ message: 'Invalid token.'});
+      } else next();
     });
+  } else {
+    res.status(401).json({ message: 'No token provided.'})
   }
-  else {
-    res
-      .status(401)
-      .json({ message: 'No token provided.'})
+}
+
+function generateToken(user) {
+  const payload = {
+    subject: user.id,
+    email: user.email
   }
+
+  const options = { expiresIn: '1w' }
+  return jwt.sign(payload, jwtKey, options);
 }
 
 module.exports = {
   jwtKey,
-  protect
+  protect,
+  generateToken
 }

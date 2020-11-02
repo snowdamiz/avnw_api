@@ -3,7 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class tracking extends Model {
     static associate(models) {
-      // define association here
+      tracking.associate = models => {
+        tracking.belongsTo(models.users);
+      }
     }
   };
   tracking.init({
