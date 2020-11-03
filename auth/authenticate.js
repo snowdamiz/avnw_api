@@ -24,6 +24,24 @@ function protect (req, res, next) {
   }
 }
 
+function restricted (req, res, next) {
+  const token = req.headers.authorization;
+
+  if ( token ) {
+    jwt.verify(token, jwtKey, (err, decodedToken) => {
+      if (err) {
+        res.status(401).json({ message: 'Invalid token.'});
+      } else if (decodedToken.account_type !== 'admin'){
+        res.status(403).json({ message: 'This is a restricted route' })
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.status(401).json({ message: 'No token provided.'})
+  }
+}
+
 function generateToken(user) {
   const payload = {
     id: user.id,
@@ -38,5 +56,6 @@ function generateToken(user) {
 module.exports = {
   jwtKey,
   protect,
+  restricted,
   generateToken
 }

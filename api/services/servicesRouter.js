@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 require('dotenv').config();
 
-const { generateToken, protect } = require('../../auth/authenticate.js');
+const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
 const DB = process.env.DB_URL;
 const servicesRouter = express.Router();
 
@@ -71,7 +71,7 @@ servicesRouter.get('/:id', async (req, res) => {
 // --------------------
 // DELETE SERVICE BY ID
 // --------------------
-servicesRouter.put('/:id/delete', protect, async (req, res) => {
+servicesRouter.put('/:id/delete', restricted, async (req, res) => {
   let { id } = req.params;
 
   try {
