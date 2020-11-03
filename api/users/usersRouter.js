@@ -68,7 +68,7 @@ const User = sequelize.define('user', {
 // Get Current User
 // ----------------
 userRouter.get('/:id', protect, async (req, res) => {
-  let id = req.params.id;
+  let { id } = req.params;
 
   try {
     const user = await User.findAll({ where: { id: id }});
@@ -165,7 +165,7 @@ userRouter.put('/:id', protect, async (req, res) => {
 // -----------
 // DELETE USER
 // -----------
-userRouter.put('/:id', protect, async (req, res) => {
+userRouter.put('/:id/delete', protect, async (req, res) => {
   let { id } = req.params;
 
   try {
