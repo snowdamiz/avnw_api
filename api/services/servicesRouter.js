@@ -16,7 +16,7 @@ const Service = sequelize.define('service', {
     type: Sequelize.INTEGER,
     primaryKey: true,
     allowNull: false,
-    authToken: true,
+    autoIncrement: true,
   },
   product: {
     field: 'product',
@@ -106,6 +106,25 @@ servicesRouter.put('/:id/delete', restricted, async (req, res) => {
       } else res.status(500).json({ err: 'Could not delete service' })
     } else res.status(404).json({ err: 'No user found'})
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })};
+});
+
+// --------------
+// CREATE SERVICE
+// --------------
+servicesRouter.post('/', restricted, async (req, res) => {
+  const { body } = req;
+
+  if (body) {
+    body.deletedAt = null;
+
+    try {
+      const service = await Service.create(body);
+      if (service) {
+        const services = await Service.findAll();
+        res.status(201).json(services)
+      } else res.status(406).json({ error: 'Server Error, service not accepted' })
+    } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
+  } else res.status(406).json({ error: 'Missing reqest body', err })
 });
 
 module.exports = servicesRouter;
