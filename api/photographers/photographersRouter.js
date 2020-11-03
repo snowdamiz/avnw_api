@@ -87,6 +87,9 @@ photographersRouter.put('/:id', restricted, async (req, res) => {
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
+// -------------------------
+// DELETE PHOTOGRAPHER BY ID
+// -------------------------
 photographersRouter.put('/:id/delete', restricted, async (req, res) => {
   let { id } = req.params;
 
@@ -103,6 +106,25 @@ photographersRouter.put('/:id/delete', restricted, async (req, res) => {
       } else res.status(500).json({ err: 'Could not delete service' })
     } else res.status(404).json({ err: 'No user found'})
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })};
+});
+
+// --------------
+// CREATE SERVICE
+// --------------
+photographersRouter.post('/', restricted, async (req, res) => {
+  const { body } = req;
+
+  if (body) {
+    body.deletedAt = null;
+
+    try {
+      const photographer = await Photographer.create(body);
+      if (photographer) {
+        const photographers = await Photographer.findAll();
+        res.status(201).json(photographers)
+      } else res.status(406).json({ err: 'Server Error, service not accepted' })
+    } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+  } else res.status(406).json({ err: 'Missing reqest body', err })
 });
 
 module.exports = photographersRouter;
