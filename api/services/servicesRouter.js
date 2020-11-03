@@ -52,7 +52,7 @@ servicesRouter.get('/', async (req, res) => {
     const services = await Service.findAll();
     if (services) res.status(200).json(services);
     else res.status(404).json({ err: 'No services found' })
-  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
 // -----------------
@@ -65,26 +65,26 @@ servicesRouter.get('/:id', async (req, res) => {
     const service = await Service.findAll({ where: { id: id }});
     if (service) res.status(200).json(service)
     else res.status(404).json({ err: 'No service found with this ID' })
-  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
 // ---------------
 // EDIT SERVICE BY ID
 // ---------------
 servicesRouter.put('/:id', restricted, async (req, res) => {
-  let id = req.params.id;
-  let edit = req.body;
+  let { id } = req.params;
+  let { body } = req;
 
   try {
     const service = await Service.findAll({ where: { id: id }});
     if (service) {
-      const editService = await Service.update(edit, { where: { id: id }});
+      const editService = await Service.update(body, { where: { id: id }});
       if (editService) {
         const services = await Service.findAll();
         res.status(202).json(services);
-      } else res.status(500).json({ error: 'Server Error, Could not update user' })
-    } else res.status(404).json({ error: 'Service not found' })
-  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
+      } else res.status(500).json({ err: 'Server Error, Could not update user' })
+    } else res.status(404).json({ err: 'Service not found' })
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
 // --------------------
@@ -105,7 +105,7 @@ servicesRouter.put('/:id/delete', restricted, async (req, res) => {
         res.status(202).json(services)
       } else res.status(500).json({ err: 'Could not delete service' })
     } else res.status(404).json({ err: 'No user found'})
-  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })};
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })};
 });
 
 // --------------
@@ -122,9 +122,9 @@ servicesRouter.post('/', restricted, async (req, res) => {
       if (service) {
         const services = await Service.findAll();
         res.status(201).json(services)
-      } else res.status(406).json({ error: 'Server Error, service not accepted' })
-    } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
-  } else res.status(406).json({ error: 'Missing reqest body', err })
+      } else res.status(406).json({ err: 'Server Error, service not accepted' })
+    } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+  } else res.status(406).json({ err: 'Missing reqest body', err })
 });
 
 module.exports = servicesRouter;

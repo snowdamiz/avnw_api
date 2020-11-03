@@ -68,4 +68,23 @@ photographersRouter.get('/:id', async (req, res) => {
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
+// -----------------------
+// EDIT PHOTOGRAPHER BY ID
+// -----------------------
+photographersRouter.put('/:id', restricted, async (req, res) => {
+  let { id } = req.params;
+  let { body } = req;
+
+  try {
+    const photographer = await Photographer.findAll({ where: { id: id }});
+    if (photographer) {
+      const editPhotographer = await Photographer.update(body, { where: { id: id }});
+      if (editPhotographer) {
+        const photographers = await Photographer.findAll();
+        res.status(202).json(photographers);
+      } else res.status(500).json({ err: 'Server Error, Could not update photographer' })
+    } else res.status(404).json({ err: 'Photographer not found' })
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+});
+
 module.exports = photographersRouter;
