@@ -90,14 +90,15 @@ userRouter.post('/register', async (req, res) => {
   if (body) {
     const hash = bcrypt.hashSync(body.password, 10);
     body.password = hash;
+    body.account_type = 'user';
 
     try {
-      const newUser = await User.create(body);
-      if (newUser) {
-        const token = generateToken(newUser);
+      const user = await User.create(body);
+      if (user) {
+        const token = generateToken(user);
         res
           .status(200)
-          .json({ token, newUser }); 
+          .json({ token, user }); 
       } else {
         res
           .status(500)
@@ -126,12 +127,14 @@ userRouter.post('/login', async (req, res) => {
       where: { email: auth.email }
     });
 
-    if (user && bcrypt.compareSync(auth.password, user[0].password)) {
+    // console.log(user.length);
+
+    if (user.length > 0 && bcrypt.compareSync(auth.password, user[0].password)) {
       try {
-        const token = await generateToken(user);
+        const token = await generateToken(user[0]);
         res
           .status(200)
-          .json({ token, message: 'Logged In' })
+          .json({ token, user, message: 'Logged In' })
       } catch (err) {
         res
           .status(401)
@@ -201,6 +204,6 @@ userRouter.put('/:id', protect, async (req, res) => {
       .status(500)
       .json({ err: err });
   }
-})
+});
 
 module.exports = userRouter;

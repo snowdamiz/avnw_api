@@ -13,7 +13,9 @@ function protect (req, res, next) {
         res
           .status(401)
           .json({ message: 'Invalid token.'});
-      } else next();
+      } else {
+        next();
+      }
     });
   } else {
     res
@@ -24,8 +26,9 @@ function protect (req, res, next) {
 
 function generateToken(user) {
   const payload = {
-    subject: user.id,
-    email: user.email
+    id: user.id,
+    email: user.email,
+    account_type: user.account_type,
   }
 
   const options = { expiresIn: '1w' }

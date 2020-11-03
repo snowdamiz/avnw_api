@@ -4,23 +4,21 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('users', [
       {
-        id: 1,
         name: 'Bob',
         email: 'bob@gmail.com',
-        password: 'bobspassword',
+        password: 'bob',
         phone: '5033333333',
         address: '1293 SE Road Rd',
         city: 'Portland',
         state: 'OR',
         zip: 97364,
-        account_type: 'user',
+        account_type: 'admin',
         createdAt: new Date(),
       },
       {
-        id: 2,
         name: 'Sam',
         email: 'sam@gmail.com',
-        password: 'samspassword',
+        password: 'sam',
         phone: '5032332233',
         address: '94874 SE Road Rd',
         city: 'Seattle',
@@ -30,10 +28,9 @@ module.exports = {
         createdAt: new Date(),
       },
       {
-        id: 3,
         name: 'Joe',
         email: 'joe@gmail.com',
-        password: 'joespassword',
+        password: 'joe',
         phone: '5033332342',
         address: '13223 SE Road Rd',
         city: 'Beaverton',
