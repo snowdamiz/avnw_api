@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 require('dotenv').config();
 
-const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
+const { restricted } = require('../../auth/authenticate.js');
 const DB = process.env.DB_URL;
 const storeRouter = express.Router();
 
@@ -116,6 +116,25 @@ storeRouter.put('/:id/delete', restricted, async (req, res) => {
       } else res.status(500).json({ err: 'Could not delete product' })
     } else res.status(404).json({ err: 'No product found'})
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })};
+});
+
+// --------------
+// CREATE PRODUCT
+// --------------
+storeRouter.post('/', restricted, async (req, res) => {
+  const { body } = req;
+
+  if (body) {
+    body.deletedAt = null;
+
+    try {
+      const product = await Merch.create(body);
+      if (product) {
+        const products = await Merch.findAll();
+        res.status(201).json(products)
+      } else res.status(406).json({ err: 'Server Error, product not accepted' })
+    } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+  } else res.status(406).json({ err: 'Missing reqest body', err })
 });
 
 module.exports = storeRouter;

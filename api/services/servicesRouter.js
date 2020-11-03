@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 require('dotenv').config();
 
-const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
+const { restricted } = require('../../auth/authenticate.js');
 const DB = process.env.DB_URL;
 const servicesRouter = express.Router();
 
