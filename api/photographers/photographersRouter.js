@@ -55,4 +55,17 @@ photographersRouter.get('/', async (req, res) => {
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
+// ----------------------
+// GET PHOTOGRAPHER BY ID
+// ----------------------
+photographersRouter.get('/:id', async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const photographer = await Photographer.findAll({ where: { id: id }});
+    if (photographer) res.status(200).json(photographer)
+    else res.status(404).json({ err: 'Photographer not found with this ID' })
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+});
+
 module.exports = photographersRouter;
