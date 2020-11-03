@@ -68,6 +68,25 @@ servicesRouter.get('/:id', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
 });
 
+// ---------------
+// EDIT SERVICE BY ID
+// ---------------
+servicesRouter.put('/:id', restricted, async (req, res) => {
+  let id = req.params.id;
+  let edit = req.body;
+
+  try {
+    const service = await Service.findAll({ where: { id: id }});
+    if (service) {
+      const editService = await Service.update(edit, { where: { id: id }});
+      if (editService) {
+        const services = await Service.findAll();
+        res.status(202).json(services);
+      } else res.status(500).json({ error: 'Server Error, Could not update user' })
+    } else res.status(404).json({ error: 'Service not found' })
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
+});
+
 // --------------------
 // DELETE SERVICE BY ID
 // --------------------
