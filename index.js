@@ -12,8 +12,8 @@ const DB = process.env.DB_URL;
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const servicesRouter = require('./api/services/servicesRouter.js');
 const userRouter = require('./api/users/usersRouter.js');
+const servicesRouter = require('./api/services/servicesRouter.js');
 const photographersRouter = require('./api/photographers/photographersRouter.js');
 const storeRouter = require('./api/store/storeRouter.js');
 const trackingRouter = require('./api/tracking/trackingRouter.js');
