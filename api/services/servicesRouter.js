@@ -56,8 +56,26 @@ servicesRouter.get('/', async (req, res) => {
       res.status(404).json({ err: 'No services found' })
     }
   } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error', err})
+    res.status(500).json({ error: 'Internal Server Error', err })
   }
 });
+
+// -----------------
+// GET SERVICE BY ID
+// -----------------
+servicesRouter.get('/:id', async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const service = await Service.findAll({ where: { id: id }});
+    if (service) {
+      res.status(200).json(service)
+    } else {
+      res.status(404).json({ err: 'No service found with this ID' })
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Internal Server Error', err })
+  }
+})
 
 module.exports = servicesRouter;

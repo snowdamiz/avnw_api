@@ -72,13 +72,13 @@ userRouter.get('/:id', protect, async (req, res) => {
 
   try {
     const user = await User.findAll({ where: { id: id }});
-    res
-      .status(200)
-      .json(user)
+    if (user) {
+      res.status(200).json(user)
+    } else {
+      res.status(404).json({ err: 'No user found with this ID' })
+    }
   } catch (err) {
-    res
-      .status(500)
-      .json(err)
+    res.status(500).json({ error: 'Internal Server Error', err })
   }
 });
 // -------------
