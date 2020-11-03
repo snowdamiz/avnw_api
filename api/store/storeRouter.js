@@ -90,11 +90,32 @@ storeRouter.put('/:id', restricted, async (req, res) => {
     if (product) {
       const editProduct = await Merch.update(body, { where: { id: id }});
       if (editProduct) {
-        const producta = await Merch.findAll();
-        res.status(202).json(producta);
+        const products = await Merch.findAll();
+        res.status(202).json(products);
       } else res.status(500).json({ err: 'Server Error, Could not update product' })
     } else res.status(404).json({ err: 'Product not found' })
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+});
+
+// --------------------
+// DELETE PRODUCT BY ID
+// --------------------
+storeRouter.put('/:id/delete', restricted, async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const product = await Merch.findAll({ where: { id: id }});
+    if (product) {
+      const deletedProduct = await Merch.update({
+        deletedAt: new Date()}, {
+          where: { id: id }
+      })
+      if (deletedProduct) {
+        const products = await Merch.findAll();
+        res.status(202).json(products)
+      } else res.status(500).json({ err: 'Could not delete product' })
+    } else res.status(404).json({ err: 'No product found'})
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })};
 });
 
 module.exports = storeRouter;
