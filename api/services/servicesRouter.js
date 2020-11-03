@@ -50,14 +50,9 @@ const Service = sequelize.define('service', {
 servicesRouter.get('/', async (req, res) => {
   try {
     const services = await Service.findAll();
-    if (services) {
-      res.status(200).json(services);
-    } else {
-      res.status(404).json({ err: 'No services found' })
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error', err })
-  }
+    if (services) res.status(200).json(services);
+    else res.status(404).json({ err: 'No services found' })
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
 });
 
 // -----------------
@@ -68,14 +63,30 @@ servicesRouter.get('/:id', async (req, res) => {
 
   try {
     const service = await Service.findAll({ where: { id: id }});
+    if (service) res.status(200).json(service)
+    else res.status(404).json({ err: 'No service found with this ID' })
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
+});
+
+// --------------------
+// DELETE SERVICE BY ID
+// --------------------
+servicesRouter.put('/:id/delete', protect, async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const service = await Service.findAll({ where: { id: id }});
     if (service) {
-      res.status(200).json(service)
-    } else {
-      res.status(404).json({ err: 'No service found with this ID' })
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error', err })
-  }
-})
+      const deletedService = await Service.update({
+        deletedAt: new Date()}, {
+          where: { id: id }
+      })
+      if (deletedService) {
+        const services = await Service.findAll();
+        res.status(202).json(services)
+      } else res.status(500).json({ err: 'Could not delete service' })
+    } else res.status(404).json({ err: 'No user found'})
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })};
+});
 
 module.exports = servicesRouter;

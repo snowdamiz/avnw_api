@@ -72,14 +72,9 @@ userRouter.get('/:id', protect, async (req, res) => {
 
   try {
     const user = await User.findAll({ where: { id: id }});
-    if (user) {
-      res.status(200).json(user)
-    } else {
-      res.status(404).json({ err: 'No user found with this ID' })
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error', err })
-  }
+    if (user) res.status(200).json(user)
+    else res.status(404).json({ err: 'No user found with this ID' })
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
 });
 // -------------
 // Register User
@@ -96,24 +91,10 @@ userRouter.post('/register', async (req, res) => {
       const user = await User.create(body);
       if (user) {
         const token = generateToken(user);
-        res
-          .status(200)
-          .json({ token, user }); 
-      } else {
-        res
-          .status(500)
-          .json({ err: 'Unable to create user' })
-      }
-    } catch (err) {
-      res
-        .status(500)
-        .json(err);
-    }
-  } else {
-    res
-      .status(500)
-      .json({ err: 'Provide an email and password' });
-  }
+        res.status(200).json({ token, user }); 
+      } else res.status(500).json({ err: 'Unable to create user' })
+    } catch (err) { res.status(500).json(err)}
+  } else res.status(500).json({ err: 'Provide an email and password' });
 });
 
 // ----------
@@ -147,19 +128,9 @@ userRouter.put('/:id', protect, async (req, res) => {
     const getUser = await User.findAll({ where: { id: id }});
     if (getUser) {
       const editUser = await User.update(edit, { where: { id: id }})
-      res
-        .status(202)
-        .json(editUser)
-    } else {
-      res
-        .status(404)
-        .json({ err: 'User Does not Exist' })
-    }
-  } catch (err) {
-    res
-      .status(500)
-      .json({ err: err })
-  }
+      res.status(202).json(editUser)
+    } else res.status(404).json({ err: 'User Does not Exist' })
+  } catch (err) { res.status(500).json({ err: err })}
 });
 
 // -----------
@@ -175,19 +146,9 @@ userRouter.put('/:id/delete', protect, async (req, res) => {
         deletedAt: new Date()}, {
         where: { id: id }
       })
-      res
-        .status(202)
-        .json(deletedUser);
-    } else {
-      res
-        .status(404)
-        .json({ err: 'User not found' })
-    }
-  } catch (err) {
-    res
-      .status(500)
-      .json({ err: err });
-  }
+      res.status(202).json(deletedUser);
+    } else res.status(404).json({ err: 'User not found' })
+  } catch (err) { res.status(500).json({ err: err })};
 });
 
 module.exports = userRouter;
