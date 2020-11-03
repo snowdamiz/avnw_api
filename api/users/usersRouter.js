@@ -108,12 +108,14 @@ userRouter.post('/login', async (req, res) => {
       where: { email: auth.email }
     });
 
-    if (user.length > 0 && bcrypt.compareSync(auth.password, user[0].password)) {
-      try {
-        const token = await generateToken(user[0]);
-        res.status(200).json({ token, user, message: 'Logged In' })
-      } catch (err) { res.status(401).json({ err: err }) }
-    } else res.status(500).json({ err: 'Password incorrect' })
+    if (user.deletedAt === null) {
+      if (user.length > 0 && bcrypt.compareSync(auth.password, user[0].password)) {
+        try {
+          const token = await generateToken(user[0]);
+          res.status(200).json({ token, user, message: 'Logged In' })
+        } catch (err) { res.status(401).json({ err: err }) }
+      } else res.status(500).json({ err: 'Password incorrect' })
+    } else res.status(403).json({ err: 'User has been deleted' })
   } else res.status(500).json({ err: 'Provide an email and password' })
 });
 

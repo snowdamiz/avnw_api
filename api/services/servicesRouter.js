@@ -49,8 +49,8 @@ const Service = sequelize.define('service', {
 // ----------------
 servicesRouter.get('/', async (req, res) => {
   try {
-    const services = await Service.findAll();
-    if (services) res.status(200).json(services);
+    const services = await Service.findAll({ where: { deletedAt: null }});
+    if (services) res.status(200).json(services)
     else res.status(404).json({ err: 'No services found' })
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });

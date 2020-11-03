@@ -49,7 +49,7 @@ const Photographer = sequelize.define('photographer', {
 // ---------------------
 photographersRouter.get('/', async (req, res) => {
   try {
-    const photographers = await Photographer.findAll();
+    const photographers = await Photographer.findAll({ where: { deletedAt: null }});
     if (photographers) res.status(200).json(photographers)
     else res.status(404).json({ err: 'No Photographers found' })
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
