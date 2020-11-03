@@ -108,7 +108,7 @@ userRouter.post('/login', async (req, res) => {
       where: { email: auth.email }
     });
 
-    if (user.deletedAt === null) {
+    if (user.deletedAt !== null) {
       if (user.length > 0 && bcrypt.compareSync(auth.password, user[0].password)) {
         try {
           const token = await generateToken(user[0]);

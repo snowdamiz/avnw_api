@@ -68,9 +68,9 @@ servicesRouter.get('/:id', async (req, res) => {
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
-// ---------------
+// ------------------
 // EDIT SERVICE BY ID
-// ---------------
+// ------------------
 servicesRouter.put('/:id', restricted, async (req, res) => {
   let { id } = req.params;
   let { body } = req;
