@@ -65,4 +65,17 @@ storeRouter.get('/', async (req, res) => {
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
 });
 
+// -----------------
+// GET SERVICE BY ID
+// -----------------
+storeRouter.get('/:id', async (req, res) => {
+  let { id } = req.params;
+
+  try {
+    const product = await Merch.findAll({ where: { id: id }});
+    if (product) res.status(200).json(product)
+    else res.status(404).json({ err: 'No product found with this ID' })
+  } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+});
+
 module.exports = storeRouter;
