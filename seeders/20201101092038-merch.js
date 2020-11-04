@@ -11,6 +11,7 @@ module.exports = {
         type: 'merch',
         category: "Decals",
         image: 'https://i.ibb.co/34D3s9m/item-2.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -21,6 +22,7 @@ module.exports = {
         type: 'merch',
         category: "Sweatshirts",
         image: 'https://i.ibb.co/6PHyrpp/item-3.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -31,6 +33,7 @@ module.exports = {
         type: 'merch',
         category: "Shirt",
         image: 'https://i.ibb.co/34D3s9m/item-4.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -41,6 +44,7 @@ module.exports = {
         type: 'merch',
         category: "Shirt",
         image: 'https://i.ibb.co/34D3s9m/item-5.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -51,6 +55,7 @@ module.exports = {
         type: 'merch',
         category: "Sweatshirt",
         image: 'https://i.ibb.co/34D3s9m/item-6.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -61,6 +66,7 @@ module.exports = {
         type: 'merch',
         category: "Sweatshirt",
         image: 'https://i.ibb.co/34D3s9m/item-7.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -71,6 +77,7 @@ module.exports = {
         type: 'merch',
         category: "Hat",
         image: 'https://i.ibb.co/34D3s9m/item-8.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -81,6 +88,7 @@ module.exports = {
         type: 'merch',
         category: "Shirt",
         image: 'https://i.ibb.co/34D3s9m/item-9.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -91,6 +99,7 @@ module.exports = {
         type: 'merch',
         category: "Shirt",
         image: 'https://i.ibb.co/34D3s9m/item-10.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
       {
@@ -101,6 +110,7 @@ module.exports = {
         type: 'merch',
         category: "Photos",
         image: 'https://i.ibb.co/34D3s9m/item-1.jpg',
+        quantity: 1,
         createdAt: new Date()
       },
     ]);

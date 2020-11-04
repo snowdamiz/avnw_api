@@ -9,6 +9,7 @@ module.exports = {
         description: 'Family photoshoot. One location up to 1 hour.',
         price: 40,
         type: 'service',
+        quantity: 1,
         createdAt: new Date(),
       },
       {
@@ -17,6 +18,7 @@ module.exports = {
         description: 'Up to 10 photos. Must be on Sunday before, or during RDM',
         price: 40,
         type: 'service',
+        quantity: 1,
         createdAt: new Date(),
       },
       {
@@ -25,6 +27,7 @@ module.exports = {
         description: 'Up to 30 photos.',
         price: 40,
         type: 'service',
+        quantity: 1,
         createdAt: new Date(),
       }
     ]);

@@ -1,7 +1,5 @@
 const express = require('express');
 const Sequelize = require('sequelize');
-const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
 require('dotenv').config();
 
 const { restricted } = require('../../auth/authenticate.js');
@@ -43,6 +41,10 @@ const Merch = sequelize.define('merch', {
   image: {
     field: 'image',
     type: Sequelize.STRING
+  },
+  quantity: {
+    field: 'quantity',
+    type: Sequelize.INTEGER
   },
   createdAt: {
     field: 'createdAt',
@@ -125,6 +127,7 @@ storeRouter.post('/', restricted, async (req, res) => {
   const { body } = req;
 
   if (body) {
+    body.quantity = 1;
     body.deletedAt = null;
 
     try {

@@ -1,10 +1,8 @@
 const express = require('express');
 const Sequelize = require('sequelize');
-const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
 require('dotenv').config();
 
-const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
+const { restricted } = require('../../auth/authenticate.js');
 const DB = process.env.DB_URL;
 const photographersRouter = express.Router();
 
@@ -92,12 +90,13 @@ photographersRouter.put('/:id', restricted, async (req, res) => {
 // -------------------------
 photographersRouter.put('/:id/delete', restricted, async (req, res) => {
   let { id } = req.params;
+  let { body } = req;
 
   try {
     const photographer = await Photographer.findAll({ where: { id: id }});
     if (photographer) {
       const deletedPhotographer = await Photographer.update({
-        deletedAt: new Date()}, {
+        deletedAt: body }, {
           where: { id: id }
       })
       if (deletedPhotographer) {
@@ -108,14 +107,14 @@ photographersRouter.put('/:id/delete', restricted, async (req, res) => {
   } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })};
 });
 
-// --------------
-// CREATE SERVICE
-// --------------
+// -------------------
+// CREATE PHOTOGRAPHER
+// -------------------
 photographersRouter.post('/', restricted, async (req, res) => {
   const { body } = req;
 
   if (body) {
-    body.deletedAt = null;
+    body.quantity = 1;
 
     try {
       const photographer = await Photographer.create(body);

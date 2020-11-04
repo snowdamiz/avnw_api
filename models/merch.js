@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     type: Sequelize.STRING,
     category: Sequelize.STRING,
     image: Sequelize.STRING,
+    quantity: Sequelize.INTEGER,
     createdAt: Sequelize.DATE,
     deletedAt: Sequelize.DATE
   }, { sequelize, modelName: 'merch' });
