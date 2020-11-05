@@ -71,7 +71,7 @@ userRouter.get('/:id', protect, async (req, res) => {
   let { id } = req.params;
 
   try {
-    const user = await User.findAll({ where: { id: id }});
+    const user = await User.findAll({ where: { id: id, deletedAt: null }});
     if (user) res.status(200).json(user)
     else res.status(404).json({ err: 'No user found with this ID' })
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
@@ -85,7 +85,7 @@ userRouter.post('/register', async (req, res) => {
   if (body) {
     const hash = bcrypt.hashSync(body.password, 10);
     body.password = hash;
-    body.account_type = 'user';
+    body.account_type = 'admin';
 
     try {
       const user = await User.create(body);

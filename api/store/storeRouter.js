@@ -92,7 +92,7 @@ storeRouter.put('/:id', restricted, async (req, res) => {
     if (product) {
       const editProduct = await Merch.update(body, { where: { id: id }});
       if (editProduct) {
-        const products = await Merch.findAll();
+        const products = await Merch.findAll({ where: { deletedAt: null }});
         res.status(202).json(products);
       } else res.status(500).json({ err: 'Server Error, Could not update product' })
     } else res.status(404).json({ err: 'Product not found' })
@@ -113,7 +113,7 @@ storeRouter.put('/:id/delete', restricted, async (req, res) => {
           where: { id: id }
       })
       if (deletedProduct) {
-        const products = await Merch.findAll();
+        const products = await Merch.findAll({ where: { deletedAt: null }});
         res.status(202).json(products)
       } else res.status(500).json({ err: 'Could not delete product' })
     } else res.status(404).json({ err: 'No product found'})
@@ -133,7 +133,7 @@ storeRouter.post('/', restricted, async (req, res) => {
     try {
       const product = await Merch.create(body);
       if (product) {
-        const products = await Merch.findAll();
+        const products = await Merch.findAll({ where: { deletedAt: null }});
         res.status(201).json(products)
       } else res.status(406).json({ err: 'Server Error, product not accepted' })
     } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}

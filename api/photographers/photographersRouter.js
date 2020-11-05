@@ -78,7 +78,7 @@ photographersRouter.put('/:id', restricted, async (req, res) => {
     if (photographer) {
       const editPhotographer = await Photographer.update(body, { where: { id: id }});
       if (editPhotographer) {
-        const photographers = await Photographer.findAll();
+        const photographers = await Photographer.findAll({ where: { deletedAt: null }});
         res.status(202).json(photographers);
       } else res.status(500).json({ err: 'Server Error, Could not update photographer' })
     } else res.status(404).json({ err: 'Photographer not found' })
@@ -100,7 +100,7 @@ photographersRouter.put('/:id/delete', restricted, async (req, res) => {
           where: { id: id }
       })
       if (deletedPhotographer) {
-        const photographers = await Photographer.findAll();
+        const photographers = await Photographer.findAll({ where: { deletedAt: null }});
         res.status(202).json(photographers)
       } else res.status(500).json({ err: 'Could not delete service' })
     } else res.status(404).json({ err: 'No user found'})
@@ -119,7 +119,7 @@ photographersRouter.post('/', restricted, async (req, res) => {
     try {
       const photographer = await Photographer.create(body);
       if (photographer) {
-        const photographers = await Photographer.findAll();
+        const photographers = await Photographer.findAll({ where: { deletedAt: null }});
         res.status(201).json(photographers)
       } else res.status(406).json({ err: 'Server Error, service not accepted' })
     } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}

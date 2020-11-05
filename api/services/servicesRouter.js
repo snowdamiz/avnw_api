@@ -82,7 +82,7 @@ servicesRouter.put('/:id', restricted, async (req, res) => {
     if (service) {
       const editService = await Service.update(body, { where: { id: id }});
       if (editService) {
-        const services = await Service.findAll();
+        const services = await Service.findAll({ where: { deletedAt: null }});
         res.status(202).json(services);
       } else res.status(500).json({ err: 'Server Error, Could not update user' })
     } else res.status(404).json({ err: 'Service not found' })
@@ -103,7 +103,7 @@ servicesRouter.put('/:id/delete', restricted, async (req, res) => {
           where: { id: id }
       })
       if (deletedService) {
-        const services = await Service.findAll();
+        const services = await Service.findAll({ where: { deletedAt: null }});
         res.status(202).json(services)
       } else res.status(500).json({ err: 'Could not delete service' })
     } else res.status(404).json({ err: 'No user found'})
@@ -122,7 +122,7 @@ servicesRouter.post('/', restricted, async (req, res) => {
     try {
       const service = await Service.create(body);
       if (service) {
-        const services = await Service.findAll();
+        const services = await Service.findAll({ where: { deletedAt: null }});
         res.status(201).json(services)
       } else res.status(406).json({ err: 'Server Error, service not accepted' })
     } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}

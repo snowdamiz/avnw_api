@@ -1,4 +1,5 @@
 const fs = require('fs');
+require('dotenv').config();
 
 module.exports = {
   development: {
@@ -9,14 +10,10 @@ module.exports = {
     }
   },
   test: {
-    username: process.env.DB_UNAME,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    host: '127.0.0.1',
-    port: 5432,
+    url: 'postgres://rtkksliv:7mL8Wl-BQDIoWxVmuPmbX7IL9QAKX2nA@lallah.db.elephantsql.com:5432/rtkksliv',
     dialect: 'postgres',
     dialectOptions: {
-      bigNumberStrings: true
+      bigNumberStrings: true,
     }
   },
   production: {

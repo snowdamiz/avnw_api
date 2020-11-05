@@ -42,8 +42,8 @@ app.use('/store', storeRouter);
 app.use('/tracking', trackingRouter);
 
 // Only listen when test mode disabled
-if (process.env.NODE_ENV !== 'test') {
+// if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => console.log(`Listening on ${PORT}`)); 
-}
+// }
 
 module.exports = app;
