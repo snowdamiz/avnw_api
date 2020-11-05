@@ -12,7 +12,7 @@ module.exports = {
         city: 'Portland',
         state: 'OR',
         zip: 97364,
-        account_type: 'admin',
+        account_type: 'user',
         createdAt: new Date(),
       },
       {
