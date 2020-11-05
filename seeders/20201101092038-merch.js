@@ -4,7 +4,6 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('merch', [
       {
-        id: 1,
         product: "AV White and Blue Hat",
         description: "AV Hat with a White and Blue design",
         price: 10,
@@ -15,7 +14,6 @@ module.exports = {
         createdAt: new Date()
       },
       {
-        id: 2,
         product: "AV Sweatshirt Round Back",
         description: "Sweatshirt with a round AVNW logo on the back",
         price: 40,
@@ -26,90 +24,82 @@ module.exports = {
         createdAt: new Date()
       },
       {
-        id: 3,
         product: "AVNW Shirt Round Back",
         description: "Shirt with a round AVNW logo on the back",
         price: 60,
         type: 'merch',
         category: "Shirt",
-        image: 'https://i.ibb.co/34D3s9m/item-4.jpg',
+        image: 'https://i.ibb.co/DGVfDn4/item-4.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 4,
         product: "Shirt Square Back Colored",
         description: "Shirt with a AVNW on the back",
         price: 40,
         type: 'merch',
         category: "Shirt",
-        image: 'https://i.ibb.co/34D3s9m/item-5.jpg',
+        image: 'https://i.ibb.co/6vw6MmB/item-5.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 5,
         product: "AV Sweatshirt Black and White",
         description: "Sweatshirt with a AVNW logo on the back",
         price: 20,
         type: 'merch',
         category: "Sweatshirt",
-        image: 'https://i.ibb.co/34D3s9m/item-6.jpg',
+        image: 'https://i.ibb.co/0K6DC2s/item-6.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 6,
         product: "PX Sweatshirt Square Back Red and White",
         description: "Sweatshirt with a PX on the back",
         price: 20,
         type: 'merch',
         category: "Sweatshirt",
-        image: 'https://i.ibb.co/34D3s9m/item-7.jpg',
+        image: 'https://i.ibb.co/CwX6jm3/item-7.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 7,
         product: "PX Red and White Hat",
         description: "Sweatshirt with a AVNW on the back",
         price: 20,
         type: 'merch',
         category: "Hat",
-        image: 'https://i.ibb.co/34D3s9m/item-8.jpg',
+        image: 'https://i.ibb.co/FJNVJ4g/item-8.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 8,
         product: "PX shirt Red and White",
         description: "Shirt with a PX logo on the back",
         price: 20,
         type: 'merch',
         category: "Shirt",
-        image: 'https://i.ibb.co/34D3s9m/item-9.jpg',
+        image: 'https://i.ibb.co/vDgqdwH/item-9.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 9,
         product: "AVNW shirt round back White and Blue",
         description: "Shirt with a AVNW logo on the back",
         price: 20,
         type: 'merch',
         category: "Shirt",
-        image: 'https://i.ibb.co/34D3s9m/item-10.jpg',
+        image: 'https://i.ibb.co/ZhCbxsL/item-10.jpg',
         quantity: 1,
         createdAt: new Date()
       },
       {
-        id: 10,
         product: "Shirt Round Back Black and White",
         description: "Shirt with a round AVNW log on the back",
         price: 20,
         type: 'merch',
         category: "Photos",
-        image: 'https://i.ibb.co/34D3s9m/item-1.jpg',
+        image: 'https://i.ibb.co/SVDdfh0/item-1.jpg',
         quantity: 1,
         createdAt: new Date()
       },
