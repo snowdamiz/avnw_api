@@ -38,6 +38,10 @@ const User = sequelize.define('user', {
     field: 'address',
     type: Sequelize.STRING
   },
+  unit: {
+    field: 'unit',
+    type: Sequelize.STRING
+  },
   city: {
     field: 'city',
     type: Sequelize.STRING
