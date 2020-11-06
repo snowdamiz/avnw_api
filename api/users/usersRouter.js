@@ -130,7 +130,10 @@ userRouter.put('/:id', protect, async (req, res) => {
     const getUser = await User.findAll({ where: { id: id }});
     if (getUser) {
       const editUser = await User.update(edit, { where: { id: id }})
-      res.status(202).json(editUser)
+      if (editUser) {
+        const newUser = await User.findAll({ where: { id: id }})
+        res.status(202).json(newUser)
+      } else res.status(500).json({ err: 'Server error, user not able to be updated' })
     } else res.status(404).json({ err: 'User Does not Exist' })
   } catch (err) { res.status(500).json({ err: err })}
 });
