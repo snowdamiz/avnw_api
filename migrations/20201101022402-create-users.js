@@ -29,6 +29,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
+      unit: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       city: {
         allowNull: true,
         type: Sequelize.STRING
