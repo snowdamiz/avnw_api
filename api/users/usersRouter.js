@@ -4,10 +4,14 @@ const Sequelize = require('sequelize');
 const { generateToken, protect } = require('../../auth/authenticate.js');
 const User = require('../../models/users.js');
 const MerchOrder = require('../../models/merchorders.js');
+const Merch = require('../../models/merch.js');
 const userRouter = express.Router();
 
 User.hasMany(MerchOrder, { foreignKey: 'user_id' });
-MerchOrder.belongsTo(User, { foreignKey: 'id' });
+MerchOrder.belongsTo(User, { foreignKey: 'user_id' });
+
+Merch.hasMany(MerchOrder, { foreignKey: 'merch_id' });
+MerchOrder.belongsTo(Merch, { foreignKey: 'merch_id' })
 
 // ----------------
 // Get Current User
@@ -109,8 +113,9 @@ userRouter.get('/:id/merch-orders', protect, async (req, res) => {
   let { id } = req.params;
   
   try {
-    const orders = await User.findByPk(id, {
-      include: [MerchOrder]
+    const orders = await MerchOrder.findAll({
+      where: { user_id: id },
+      include: [Merch, User]
     });
     if (orders) res.status(200).json(orders);
     else res.status(404).json({ err: 'No Orders to Show' })
