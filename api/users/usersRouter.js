@@ -115,7 +115,7 @@ userRouter.get('/:id/merch-orders', protect, async (req, res) => {
   try {
     const orders = await MerchOrder.findAll({
       where: { user_id: id },
-      include: [Merch, User]
+      include: [Merch]
     });
     if (orders) res.status(200).json(orders);
     else res.status(404).json({ err: 'No Orders to Show' })
