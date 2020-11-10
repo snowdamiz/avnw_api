@@ -1,60 +1,7 @@
 const express = require('express');
-const Sequelize = require('sequelize');
-require('dotenv').config();
-
 const { restricted } = require('../../auth/authenticate.js');
-const DB = process.env.DB_URL;
+const Merch = require('../../models/merch.js');
 const storeRouter = express.Router();
-
-const sequelize = new Sequelize(DB, {
-  define: { freezeTableName: true}
-});
-
-const Merch = sequelize.define('merch', {
-  id: {
-    field: 'id',
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true,
-  },
-  product: {
-    field: 'product',
-    type: Sequelize.STRING
-  },
-  description: {
-    field: 'description',
-    type: Sequelize.STRING
-  },
-  price: {
-    field: 'price',
-    type: Sequelize.INTEGER
-  },
-  type: {
-    field: 'type',
-    type: Sequelize.STRING
-  },
-  category: {
-    field: 'category',
-    type: Sequelize.STRING
-  },
-  image: {
-    field: 'image',
-    type: Sequelize.STRING
-  },
-  quantity: {
-    field: 'quantity',
-    type: Sequelize.INTEGER
-  },
-  createdAt: {
-    field: 'createdAt',
-    type: Sequelize.DATE
-  },
-  deletedAt: {
-    field: 'deletedAt',
-    type: Sequelize.DATE
-  }
-}, { timestamps: false });
 
 // ----------------
 // GET ALL PRODUCTS

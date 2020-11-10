@@ -1,72 +1,9 @@
 const express = require('express');
-const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
-require('dotenv').config();
-
 const { generateToken, protect } = require('../../auth/authenticate.js');
-const DB = process.env.DB_URL;
+const User = require('../../models/users.js');
 const userRouter = express.Router();
 
-const sequelize = new Sequelize(DB);
-
-const User = sequelize.define('user', {
-  id: {
-    field: 'id',
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true,
-  },
-  name: {
-    field: 'name',
-    type: Sequelize.STRING,
-  },
-  email: {
-    field: 'email',
-    type: Sequelize.STRING
-  },
-  password: {
-    field: 'password',
-    type: Sequelize.STRING
-  },
-  phone: {
-    field: 'phone',
-    type: Sequelize.STRING
-  },
-  address: {
-    field: 'address',
-    type: Sequelize.STRING
-  },
-  unit: {
-    field: 'unit',
-    type: Sequelize.STRING
-  },
-  city: {
-    field: 'city',
-    type: Sequelize.STRING
-  },
-  state: {
-    field: 'state',
-    type: Sequelize.STRING
-  },
-  zip: {
-    field: 'zip',
-    type: Sequelize.INTEGER
-  },
-  account_type: {
-    field: 'account_type',
-    type: Sequelize.STRING
-  },
-  createdAt: {
-    field: 'createdAt',
-    type: Sequelize.DATE
-  },
-  deletedAt: {
-    field: 'deletedAt',
-    type: Sequelize.DATE
-  },
-}, { timestamps: false })
 
 // ----------------
 // Get Current User
@@ -80,6 +17,7 @@ userRouter.get('/:id', protect, async (req, res) => {
     else res.status(404).json({ err: 'No user found with this ID' })
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err })}
 });
+
 // -------------
 // Register User
 // -------------
@@ -159,5 +97,16 @@ userRouter.put('/:id/delete', protect, async (req, res) => {
     } else res.status(404).json({ err: 'User not found' })
   } catch (err) { res.status(500).json({ err: err })};
 });
+
+// ---------------------
+// GET USER MERCH ORDERS
+// ---------------------
+// userRouter.get('/:id/merch-orders', protect, async (req, res) => {
+//   let { id } = req.params;
+  
+//   try {
+//     const order = await 
+//   } catch (err) {}
+// })
 
 module.exports = userRouter;

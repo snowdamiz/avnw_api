@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
   class tracking extends Model {
     static associate(models) {
       tracking.associate = models => {
-        tracking.belongsTo(models.users);
+        tracking.belongsTo(models.users, {
+          foreignKey: 'user_id',
+        });
       }
     }
   };
