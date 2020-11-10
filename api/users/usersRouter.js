@@ -1,9 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const Sequelize = require('sequelize');
 const { generateToken, protect } = require('../../auth/authenticate.js');
 const User = require('../../models/users.js');
+const MerchOrder = require('../../models/merchorders.js');
 const userRouter = express.Router();
 
+User.hasMany(MerchOrder, { foreignKey: 'user_id' });
+MerchOrder.belongsTo(User, { foreignKey: 'id' });
 
 // ----------------
 // Get Current User
@@ -101,12 +105,16 @@ userRouter.put('/:id/delete', protect, async (req, res) => {
 // ---------------------
 // GET USER MERCH ORDERS
 // ---------------------
-// userRouter.get('/:id/merch-orders', protect, async (req, res) => {
-//   let { id } = req.params;
+userRouter.get('/:id/merch-orders', protect, async (req, res) => {
+  let { id } = req.params;
   
-//   try {
-//     const order = await 
-//   } catch (err) {}
-// })
+  try {
+    const orders = await User.findByPk(id, {
+      include: [MerchOrder]
+    });
+    if (orders) res.status(200).json(orders);
+    else res.status(404).json({ err: 'No Orders to Show' })
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err }) }
+})
 
 module.exports = userRouter;
