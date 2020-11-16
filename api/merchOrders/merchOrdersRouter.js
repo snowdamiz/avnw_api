@@ -1,6 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const Sequelize = require('sequelize');
 const { restricted } = require('../../auth/authenticate.js');
 const MerchOrder = require('../../models/merchorders.js');
 

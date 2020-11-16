@@ -17,6 +17,7 @@ const photographersRouter = require('./api/photographers/photographersRouter.js'
 const storeRouter = require('./api/store/storeRouter.js');
 const trackingRouter = require('./api/tracking/trackingRouter.js');
 const merchOrdersRouter = require('./api/merchOrders/merchOrdersRouter.js');
+const serviceOrdersRouter = require('./api/serviceOrders/serviceOrdersRouter.js');
 
 // Cors Init
 const corsOptions = {
@@ -41,6 +42,7 @@ app.use('/photographers', photographersRouter);
 app.use('/store', storeRouter);
 app.use('/tracking', trackingRouter);
 app.use('/merch-orders', merchOrdersRouter);
+app.use('/service-orders', serviceOrdersRouter);
 
 // Only listen when test mode disabled
 // if (process.env.NODE_ENV !== 'test') {
