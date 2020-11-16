@@ -53,8 +53,21 @@ merchOrdersRouter.put('/:id/edit', restricted, async (req, res) => {
 // DELETE MERCH ORDER BY ID
 // ------------------------
 merchOrdersRouter.put('/:id/delete', restricted, async (req, res) => {
+  let { id } = req.params;
 
+  try {
+    const order = await MerchOrder.findAll({ where: { id: id }})
+    if (order) {
+      const deletedOrder = await MerchOrder.update({
+        deletedAt: new Date()}, {
+          where: { id: id }
+      })
+      if (deletedOrder) {
+        const orders = await MerchOrder.findAll({ where: { deletedAt: null }})
+        res.status(202).json(orders)
+      } else res.status(500).json({ err: 'Could not delete order' })
+    } else res.status(404).json({ err: 'No order ound with that ID' })
+  } catch (err) { res.status(500).json({ err: 'Internal server error', err })}
 });
 
 module.exports = merchOrdersRouter;
-;
