@@ -44,9 +44,6 @@ app.use('/tracking', trackingRouter);
 app.use('/merch-orders', merchOrdersRouter);
 app.use('/service-orders', serviceOrdersRouter);
 
-// Only listen when test mode disabled
-// if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => console.log(`Listening on ${PORT}`)); 
-// }
+app.listen(PORT, () => console.log(`Listening on ${PORT}`)); 
 
 module.exports = app;
