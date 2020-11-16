@@ -136,9 +136,9 @@ userRouter.get('/:id/merch-orders', protect, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err }) }
 });
 
-// --------------
-// POST NEW ORDER
-// --------------
+// --------------------
+// POST NEW MERCH ORDER
+// --------------------
 userRouter.post('/:id/merch-orders', protect, async (req, res) => {
   const { body } = req;
 
@@ -148,7 +148,7 @@ userRouter.post('/:id/merch-orders', protect, async (req, res) => {
       if (order) {
         res.status(201).json(order);
       } else res.status(406).json({ err: 'Server error, order not accepted' })
-    } catch (err) { res.status(500).json({ err: 'Internal server error' })}
+    } catch (err) { res.status(500).json({ err: 'Internal server error', err })}
   } else res.status(406).json({ err: 'Missing request body' })
 })
 
@@ -167,5 +167,21 @@ userRouter.get('/:id/service-orders', protect, async (req, res) => {
     else res.status(404).json({ err: 'No Orders to Show' })
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err }) }
 });
+
+// ----------------------
+// POST NEW SERVICE ORDER
+// ----------------------
+userRouter.post('/:id/service-orders', protect, async (req, res) => {
+  const { body } = req;
+
+  if (body) {
+    try {
+      const order = await ServiceOrder.create(body);
+      if (order) {
+        res.status(201).json(order);
+      } else  res.status(406).json({ err: 'Server error, order not accepted' })
+    } catch (err) { res.status(500).json({ err: 'Internal server error', err }) }
+  } else res.status(406).json({ err: 'Missing request body' })
+})
 
 module.exports = userRouter;
