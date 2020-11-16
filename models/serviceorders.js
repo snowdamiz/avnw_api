@@ -1,22 +1,54 @@
-'use strict';
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class serviceOrders extends Model {
-    static associate(models) {
-      // define association here
-    }
-  };
-  serviceOrders.init({
-    location: DataTypes.STRING,
-    comment: DataTypes.STRING,
-    status: DataTypes.STRING,
-    order_number: Sequelize.INTEGER,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
-    deletedAt: DataTypes.DATE,
-    user_id: DataTypes.INSERT,
-    service_id: DataTypes.INSERT,
-    photographer_id: DataTypes.INSERT
-  }, { sequelize, modelName: 'serviceOrders' });
-  return serviceOrders;
-};
+require('dotenv').config();
+const Sequelize = require('sequelize');
+const DB = process.env.DB_URL;
+const sequelize = new Sequelize(DB);
+
+module.exports = sequelize.define('serviceOrders', {
+  id: {
+    field: 'id',
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true,
+  },
+  location: {
+    field: 'location',
+    type: Sequelize.STRING
+  },
+  comment: {
+    field: 'comment',
+    type: Sequelize.STRING
+  },
+  status: {
+    field: 'status',
+    type: Sequelize.STRING
+  },
+  order_number: {
+    field: 'order_number',
+    type: Sequelize.INTEGER
+  },
+  user_id: {
+    field: 'user_id',
+    type: Sequelize.INTEGER
+  },
+  service_id: {
+    field: 'service_id',
+    type: Sequelize.INTEGER
+  },
+  photographer_id: {
+    field: 'photographer_id',
+    type: Sequelize.INTEGER
+  },
+  createdAt: {
+    field: 'createdAt',
+    type: Sequelize.DATE
+  },
+  deletedAt: {
+    field: 'deletedAt',
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    field: 'updatedAt',
+    type: Sequelize.DATE
+  },
+}, { timestamps: false });

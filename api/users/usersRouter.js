@@ -1,17 +1,31 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
-const { generateToken, protect } = require('../../auth/authenticate.js');
+const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
+
 const User = require('../../models/users.js');
 const MerchOrder = require('../../models/merchorders.js');
+const ServiceOrder = require('../../models/serviceorders.js');
 const Merch = require('../../models/merch.js');
+const Service = require('../../models/services.js');
+const Photographer = require('../../models/photographers.js');
+
 const userRouter = express.Router();
 
 User.hasMany(MerchOrder, { foreignKey: 'user_id' });
 MerchOrder.belongsTo(User, { foreignKey: 'user_id' });
 
+User.hasMany(ServiceOrder, { foreignKey: 'user_id' });
+ServiceOrder.belongsTo(User, { foreignKey: 'user_id' });
+
 Merch.hasMany(MerchOrder, { foreignKey: 'merch_id' });
-MerchOrder.belongsTo(Merch, { foreignKey: 'merch_id' })
+MerchOrder.belongsTo(Merch, { foreignKey: 'merch_id' });
+
+Service.hasMany(ServiceOrder, { foreignKey: 'service_id' });
+ServiceOrder.belongsTo(Service, { foreignKey: 'service_id' });
+
+Photographer.hasMany(ServiceOrder, { foreignKey: 'photographer_id' });
+ServiceOrder.belongsTo(Photographer, { foreignKey: 'photographer_id' });
 
 // ----------------
 // Get Current User
@@ -120,6 +134,38 @@ userRouter.get('/:id/merch-orders', protect, async (req, res) => {
     if (orders) res.status(200).json(orders);
     else res.status(404).json({ err: 'No Orders to Show' })
   } catch (err) { res.status(500).json({ error: 'Internal Server Error', err }) }
+});
+
+// --------------
+// POST NEW ORDER
+// --------------
+userRouter.post('/:id/merch-orders', protect, async (req, res) => {
+  const { body } = req;
+
+  if (body) {
+    try {
+      const order = await MerchOrder.create(body);
+      if (order) {
+        res.status(201).json(order);
+      } else res.status(406).json({ err: 'Server error, order not accepted' })
+    } catch (err) { res.status(500).json({ err: 'Internal server error' })}
+  } else res.status(406).json({ err: 'Missing request body' })
 })
+
+// -----------------------
+// GET USER SERVICE ORDERS
+// -----------------------
+userRouter.get('/:id/service-orders', protect, async (req, res) => {
+  let { id } = req.params;
+  
+  try {
+    const orders = await ServiceOrder.findAll({
+      where: { user_id: id },
+      include: [Service, Photographer]
+    });
+    if (orders) res.status(200).json(orders);
+    else res.status(404).json({ err: 'No Orders to Show' })
+  } catch (err) { res.status(500).json({ error: 'Internal Server Error', err }) }
+});
 
 module.exports = userRouter;

@@ -19,13 +19,13 @@ module.exports = sequelize.define('merchOrders', {
     field: 'tracking',
     type: Sequelize.STRING
   },
-  order_number: {
-    field: 'order_number',
-    type: Sequelize.INTEGER,
-  },
   quantity: {
     field: 'quantity',
     type: Sequelize.INTEGER
+  },
+  order_number: {
+    field: 'order_number',
+    type: Sequelize.INTEGER,
   },
   user_id: {
     field: 'user_id',
@@ -35,4 +35,16 @@ module.exports = sequelize.define('merchOrders', {
     field: 'merch_id',
     type: Sequelize.INTEGER
   },
-}, { timestamps: false })
+  createdAt: {
+    field: 'createdAt',
+    type: Sequelize.DATE
+  },
+  deletedAt: {
+    field: 'deletedAt',
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    field: 'updatedAt',
+    type: Sequelize.DATE
+  },
+}, { timestamps: false });
