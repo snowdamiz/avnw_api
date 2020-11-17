@@ -19,8 +19,8 @@ module.exports = sequelize.define('serviceOrders', {
     field: 'comment',
     type: Sequelize.STRING
   },
-  status: {
-    field: 'status',
+  date: {
+    field: 'date',
     type: Sequelize.STRING
   },
   order_number: {
