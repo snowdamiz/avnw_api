@@ -1,15 +1,30 @@
 const express = require('express');
 const { restricted } = require('../../auth/authenticate.js');
 const ServiceOrder = require('../../models/serviceorders.js');
+const User = require('../../models/users.js');
+const Service = require('../../models/service.js');
+const Photographer = require('../../models/photographers.js');
 
 const serviceOrdersRouter = express.Router();
+
+User.hasMany(ServiceOrder, { foreignKey: 'user_id' });
+ServiceOrder.belongsTo(User, { foreignKey: 'user_id' });
+
+Service.hasMany(ServiceOrder, { foreignKey: 'service_id' });
+ServiceOrder.belongsTo(Service, { foreignKey: 'service_id' });
+
+Photographer.hasMany(ServiceOrder, { foreignKey: 'photographer_id' });
+ServiceOrder.belongsTo(Photographer, { foreignKey: 'photographer_id' });
 
 // --------------------
 // GET ALL MERCH ORDERS
 // --------------------
 serviceOrdersRouter.get('/', restricted, async (req, res) => {
   try {
-    const orders = await ServiceOrder.findAll({ where: { deletedAt: null }});
+    const orders = await ServiceOrder.findAll({
+      where: { deletedAt: null },
+      include: [Service, Photographer]
+    });
     if (orders) res.status(200).json(orders)
     else res.status(404).json({ err: 'No orders found' })
   } catch (err) { res.status(500).json({ err: 'Internal server error', err })}
