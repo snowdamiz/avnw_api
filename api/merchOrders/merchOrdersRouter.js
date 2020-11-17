@@ -51,7 +51,10 @@ merchOrdersRouter.put('/:id/edit', restricted, async (req, res) => {
     if (order) {
       const editOrder = await MerchOrder.update(body, { where: { id: id }})
       if (editOrder) {
-        const order = await MerchOrder.findAll({ where: { id: id, deletedAt: null }})
+        const order = await MerchOrder.findAll({
+          where: { id: id, deletedAt: null },
+          include: [Merch, User]
+        })
         res.status(202).json(order);
       } else res.status(500).json({ err: 'Server Error, could not find orders' })
     } else res.status(404).json({ err: 'Order not found' })
