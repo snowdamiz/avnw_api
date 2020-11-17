@@ -49,7 +49,7 @@ userRouter.post('/register', async (req, res) => {
   if (body) {
     const hash = bcrypt.hashSync(body.password, 10);
     body.password = hash;
-    body.account_type = 'user';
+    body.account_type = 'admin';
 
     try {
       const user = await User.create(body);
