@@ -6,7 +6,7 @@ module.exports = {
       {
         location: '23409 SW Reed Ave',
         comment: 'Comment goes here.',
-        status: 'delivered',
+        date: '11/20/20',
         order_number: 1,
         createdAt: new Date(),
         user_id: 1,
@@ -16,7 +16,7 @@ module.exports = {
       {
         location: '23409 SW Reed Ave',
         comment: 'Comment goes here again.',
-        status: 'ordered',
+        date: '11/20/20',
         order_number: 2,
         createdAt: new Date(),
         user_id: 1,
@@ -26,7 +26,7 @@ module.exports = {
       {
         location: '4989 NW Aspen Ave',
         comment: 'Comment goes here here.',
-        status: 'delivered',
+        date: '11/20/20',
         order_number: 1,
         createdAt: new Date(),
         user_id: 2,
@@ -36,7 +36,7 @@ module.exports = {
       {
         location: '4989 NW Aspen Ave',
         comment: 'Comment goes here again here.',
-        status: 'ordered',
+        date: '11/20/20',
         order_number: 2,
         createdAt: new Date(),
         user_id: 2,

@@ -12,12 +12,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      comment: {
-        allowNull: true,
+      date: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      status: {
-        allowNull: false,
+      comment: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       order_number: {
