@@ -34,7 +34,9 @@
     "pg": "^8.4.1",
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "stripe": "^8.124.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

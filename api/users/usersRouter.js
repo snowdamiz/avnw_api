@@ -2,6 +2,11 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
+const bodyParser = require('body-parser');
+const { Stripe } = require('stripe');
+const { v4 } = require('uuid');
+
+const userRouter = express.Router();
 
 const User = require('../../models/users.js');
 const MerchOrder = require('../../models/merchorders.js');
@@ -10,7 +15,9 @@ const Merch = require('../../models/merch.js');
 const Service = require('../../models/services.js');
 const Photographer = require('../../models/photographers.js');
 
-const userRouter = express.Router();
+const stripe = new Stripe('sk_test_Ed9d8T76puISLXcu5AOeYzaJ00cfGDICBA',  {
+  apiVersion: '2020-08-27',
+})
 
 User.hasMany(MerchOrder, { foreignKey: 'user_id' });
 MerchOrder.belongsTo(User, { foreignKey: 'user_id' });
@@ -182,6 +189,52 @@ userRouter.post('/:id/service-orders', protect, async (req, res) => {
       } else  res.status(406).json({ err: 'Server error, order not accepted' })
     } catch (err) { res.status(500).json({ err: 'Internal server error', err }) }
   } else res.status(406).json({ err: 'Missing request body' })
+})
+
+// -------
+// PAYMENT
+// -------
+userRouter.post('/:id/pay', protect, async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  const { card } = token,
+
+  const address = (
+    body.user.address +
+    body.user.unit +
+    body.user.city +
+    body.user.state +
+    body.user.zip
+  );
+  
+  const key = v4();
+
+  try {
+    const customer = await stripe.customers.create({
+      eamil: body.email,
+      source: body.authToken.id
+    })
+
+    const res = await stripe.charges.create({
+      amount: body.total * 100,
+      currency: 'usd',
+      customer: customer.id,
+      receipt_email: body.user.email,
+      description: body.description,
+      shipping: {
+        name: card.name,
+        address: {
+          line1: body.user.address,
+          unit: body.user.unit,
+          city: body.user.city,
+          state: body.user.state,
+          zip: body.user.zip,
+          country: card.address_country,
+        }
+      }
+    }, { idempotencyKey: key })
+    res.status(201).json(res);
+   } catch (err) { console.log({ err: 'Stripe error', err})}
 })
 
 module.exports = userRouter;
