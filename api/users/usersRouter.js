@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
 const bodyParser = require('body-parser');
 const stripe = require("stripe")("sk_test_Ed9d8T76puISLXcu5AOeYzaJ00cfGDICBA");
-const { uuid } = require('uuidv4');
+const { v4: uuidv4 } = require('uuid');
 
 const userRouter = express.Router();
 
@@ -202,7 +202,7 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
           source: token.id
       });
 
-      const idempotencyKey = uuid();
+      const idempotencyKey = v4();
       const charge = await stripe.charges.create({
           amount: body.total * 100,
           currency: "usd",
