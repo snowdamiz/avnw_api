@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -31,6 +32,8 @@ const app = express();
 app.use(
   express.json(),
   cors(corsOptions),
+  bodyParser.urlencoded({ extended: false }),
+  bodyParser.json(),
   helmet(),
   morgan('dev')
 );

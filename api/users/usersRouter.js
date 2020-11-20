@@ -190,8 +190,7 @@ userRouter.post('/:id/service-orders', protect, async (req, res) => {
 // -------
 // PAYMENT
 // -------
-userRouter.post('/:id/pay', protect, async (req, res) => {
-  const { id } = req.params;
+userRouter.post('/pay', async (req, res) => {
   const { body } = req;
   const { token } = body.authToken;
   const { card } = token;
@@ -201,28 +200,36 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
   try {
       const customer = await stripe.customers.create({
           email: body.user.email,
-          source: token.id
+          source: token.id,
+          name: body.user.name,
+          address: {
+            line1: body.user.address,
+            city: body.user.city,
+            state: body.user.state,
+            postal_code: body.user.zip,
+            country: 'US',
+          },
       });
 
       // console.log(bodbody.user.email);
       // console.log(token);
-      console.log(body);
-      console.log(idempotencyKey);
       console.log(customer);
+      // console.log(idempotencyKey);
+      // console.log(customer);
 
-      // const key = v4();
-      // const charge = await stripe.charges.create({
-      //     amount: body.price * 100,
-      //     currency: "usd",
-      //     customer: customer.id,
-      //     receipt_email: body.user.email,
-      //     description: `Purchase`,
-      // }, { idempotencyKey: key });
+      const key = v4();
+      const charge = await stripe.charges.create({
+          amount: body.price * 100,
+          currency: "USD",
+          customer: customer.id,
+          receipt_email: body.user.email,
+          description: `Purchase`,
+      }, { idempotencyKey: key });
 
-      // if (charge) {
-      //   res.status(202).json(charge);
-      //   console.log(charge);
-      // } else res.status(500).json({ err: 'Could not process payment' });
+      if (charge) {
+        res.status(202).json(charge);
+        console.log(charge);
+      } else res.status(500).json({ err: 'Could not process payment' });
   } catch (err) { res.status(500).json({ err: 'Internal server error', err })};
 })
 
