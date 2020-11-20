@@ -196,13 +196,16 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
   const { token } = body.authToken;
   const { card } = token;
 
+  console.log('here');
+
   try {
       const customer = await stripe.customers.create({
           email: body.user.email,
           source: token.id
       });
 
-      console.log(body);
+      // console.log(bodbody.user.email);
+      console.log(token.id);
 
       const idempotencyKey = v4();
       const charge = await stripe.charges.create({
