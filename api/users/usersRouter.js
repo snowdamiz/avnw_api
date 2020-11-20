@@ -225,12 +225,7 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
       shipping: {
         name: card.name,
         address: {
-          line1: body.user.address,
-          unit: body.user.unit,
-          city: body.user.city,
-          state: body.user.state,
-          zip: body.user.zip,
-          country: card.address_country,
+          line1: address,
         }
       }
     }, { idempotencyKey: key })
