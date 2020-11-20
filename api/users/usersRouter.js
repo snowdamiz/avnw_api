@@ -207,15 +207,17 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
       // console.log(bodbody.user.email);
       // console.log(token);
       console.log(body);
+      console.log(idempotencyKey);
+      console.log(customer);
 
-      const idempotencyKey = v4();
-      const charge = await stripe.charges.create({
-          amount: body.price * 100,
-          currency: "usd",
-          customer: customer.id,
-          receipt_email: body.user.email,
-          description: `Purchase`,
-      }, { idempotencyKey: idempotencyKey });
+      // const key = v4();
+      // const charge = await stripe.charges.create({
+      //     amount: body.price * 100,
+      //     currency: "usd",
+      //     customer: customer.id,
+      //     receipt_email: body.user.email,
+      //     description: `Purchase`,
+      // }, { idempotencyKey: key });
 
       if (charge) {
         res.status(202).json(charge);
