@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
 const bodyParser = require('body-parser');
 const stripe = require("stripe")("sk_test_Ed9d8T76puISLXcu5AOeYzaJ00cfGDICBA");
-const uuid = require('uuid/v4');
+const { uuid } = require('uuidv4');
 
 const userRouter = express.Router();
 
