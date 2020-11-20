@@ -202,13 +202,15 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
           source: token.id
       });
 
+      // console.log(customer);
+
       const idempotency_key = uuid();
       const charge = await stripe.charges.create({
-          amount: product.price * 100,
+          amount: body.total * 100,
           currency: "usd",
           customer: customer.id,
           receipt_email: token.email,
-          description: `Pruchased the ${product.shoot}`,
+          description: `Pruchase`,
       }, { idempotency_key });
       
       console.log("Charge: ", { charge });
