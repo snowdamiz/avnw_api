@@ -205,7 +205,7 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
       });
 
       // console.log(bodbody.user.email);
-      console.log(token.id);
+      console.log(token);
 
       const idempotencyKey = v4();
       const charge = await stripe.charges.create({
