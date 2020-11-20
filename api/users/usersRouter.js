@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
 const bodyParser = require('body-parser');
-const { Stripe } = require('stripe');
+const stripe = require("stripe")("sk_test_Ed9d8T76puISLXcu5AOeYzaJ00cfGDICBA");
 const { v4 } = require('uuid');
 
 const userRouter = express.Router();
@@ -14,10 +14,6 @@ const ServiceOrder = require('../../models/serviceorders.js');
 const Merch = require('../../models/merch.js');
 const Service = require('../../models/services.js');
 const Photographer = require('../../models/photographers.js');
-
-const stripe = new Stripe('sk_test_Ed9d8T76puISLXcu5AOeYzaJ00cfGDICBA',  {
-  apiVersion: '2020-08-27',
-})
 
 User.hasMany(MerchOrder, { foreignKey: 'user_id' });
 MerchOrder.belongsTo(User, { foreignKey: 'user_id' });
@@ -200,37 +196,18 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
   const { token } = body.authToken;
   const { card } = token;
 
-  const address = (
-    body.user.address +
-    body.user.unit +
-    body.user.city +
-    body.user.state +
-    body.user.zip
-  );
-  
-  const key = v4();
-
   try {
-    const customer = await stripe.customers.create({
-      eamil: body.email,
-      source: token.id
-    })
-
-    const res = await stripe.charges.create({
+    const paymentIntent = await stripe.paymentIntents.create({
       amount: body.total * 100,
-      currency: 'usd',
-      customer: customer.id,
-      receipt_email: body.user.email,
-      description: body.description,
-      shipping: {
-        name: card.name,
-        address: {
-          line1: body.user.address,
-        }
-      }
-    }, { idempotencyKey: key })
-    res.status(201).json(res);
-   } catch (err) { console.log({ err: 'Stripe error', err})}
+      currency: "usd"
+    });
+    res.send({
+      clientSecret: paymentIntent.client_secret
+    });
+    if (paymentIntent) {
+      res.status(202).json(paymentIntent);
+    } else res.status(500).json({ err: 'Payment could not be completed' })
+   } catch (err) { console.log({ err: 'Stripe error', err })}
 })
 
 module.exports = userRouter;
