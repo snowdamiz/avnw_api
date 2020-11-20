@@ -219,10 +219,10 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
       //     description: `Purchase`,
       // }, { idempotencyKey: key });
 
-      if (charge) {
-        res.status(202).json(charge);
-        console.log(charge);
-      } else res.status(500).json({ err: 'Could not process payment' });
+      // if (charge) {
+      //   res.status(202).json(charge);
+      //   console.log(charge);
+      // } else res.status(500).json({ err: 'Could not process payment' });
   } catch (err) { res.status(500).json({ err: 'Internal server error', err })};
 })
 
