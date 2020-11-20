@@ -202,6 +202,8 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
           source: token.id
       });
 
+      console.log(body);
+
       const idempotencyKey = v4();
       const charge = await stripe.charges.create({
           amount: body.total * 100,
@@ -213,6 +215,7 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
 
       if (charge) {
         res.status(202).json(charge);
+        console.log(charge);
       } else res.status(500).json({ err: 'Could not process payment' });
   } catch (err) { res.status(500).json({ err: 'Internal server error', err })};
 })
