@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const { generateToken, protect, restricted } = require('../../auth/authenticate.js');
 const bodyParser = require('body-parser');
 const stripe = require("stripe")("sk_test_Ed9d8T76puISLXcu5AOeYzaJ00cfGDICBA");
-const { v4 } = require('uuid');
+const uuid = require('uuid/v4');
 
 const userRouter = express.Router();
 
@@ -197,17 +197,27 @@ userRouter.post('/:id/pay', protect, async (req, res) => {
   const { card } = token;
 
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: body.total * 100,
-      currency: "usd"
-    });
-    res.send({
-      clientSecret: paymentIntent.client_secret
-    });
-    if (paymentIntent) {
-      res.status(202).json(paymentIntent);
-    } else res.status(500).json({ err: 'Payment could not be completed' })
-   } catch (err) { console.log({ err: 'Stripe error', err })}
+      const customer = await stripe.customers.create({
+          email: body.user.email,
+          source: token.id
+      });
+
+      const idempotency_key = uuid();
+      const charge = await stripe.charges.create({
+          amount: product.price * 100,
+          currency: "usd",
+          customer: customer.id,
+          receipt_email: token.email,
+          description: `Pruchased the ${product.shoot}`,
+      }, { idempotency_key });
+      
+      console.log("Charge: ", { charge });
+      status = "success"
+  } catch (err) {
+      console.log("Error: ", err)
+      status = "error"
+  }
+  res.json({ err, status });
 })
 
 module.exports = userRouter;
