@@ -197,41 +197,17 @@ userRouter.post('/pay', async (req, res) => {
   const { token } = body.authToken;
   const { card } = token;
   
-
-  // console.log('here');
-  // console.log('=====Body====');
-  // console.log(body);
-  // console.log('=====Email====');
-  // console.log(body.user.email);
-  // console.log('=====Token====');
-  // console.log(token);
-  // console.log('=====Name====');
-  // console.log(body.user.name);
-  
   try {
-      // const address = `${user.address} ${user.unit} ${user.city} ${user.state} ${user.zip}`;
       const customer = await stripe.customers.create({
           email: body.user.email,
           source: token.id,
-          // address: address,
-          // phone: user.phone,
-          // name: body.user.name,
       });
 
-      // console.log(bodbody.user.email);
-      // console.log(token);
-      console.log('=====Customer====');
-      console.log(customer);
-      // console.log(idempotencyKey);
-      // console.log(customer);
-
-      // const key = v4();
       const charge = await stripe.charges.create({
           amount: body.price * 100,
           currency: 'usd',
           customer: customer.id,
           receipt_email: user.email,
-          description: body.description,
       });
 
       if (charge) {
