@@ -209,12 +209,12 @@ userRouter.post('/pay', async (req, res) => {
   // console.log(body.user.name);
   
   try {
-      const address = `${user.address} ${user.unit} ${user.city} ${user.state} ${user.zip}`;
+      // const address = `${user.address} ${user.unit} ${user.city} ${user.state} ${user.zip}`;
       const customer = await stripe.customers.create({
           email: body.user.email,
           source: token.id,
-          address: address,
-          phone: user.phone,
+          // address: address,
+          // phone: user.phone,
           // name: body.user.name,
       });
 
