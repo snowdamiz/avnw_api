@@ -196,21 +196,14 @@ userRouter.post('/pay', async (req, res) => {
   const { token } = body.authToken;
   const { card } = token;
 
-  console.log('here');
-  console.log(body);
+  // console.log('here');
+  // console.log(body);
 
   try {
       const customer = await stripe.customers.create({
           email: body.user.email,
-          source: token.id,
+          source: token,
           name: body.user.name,
-          address: {
-            line1: body.user.address,
-            city: body.user.city,
-            state: body.user.state,
-            postal_code: body.user.zip,
-            country: 'US',
-          },
       });
 
       // console.log(bodbody.user.email);
