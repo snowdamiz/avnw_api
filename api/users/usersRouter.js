@@ -193,21 +193,18 @@ userRouter.post('/:id/service-orders', protect, async (req, res) => {
 // -------
 userRouter.post('/pay', async (req, res) => {
   const { body } = req;
-  const { user } = body.user;
   const { token } = body.authToken;
-  const { card } = token;
   
   try {
       const customer = await stripe.customers.create({
           email: body.user.email,
-          source: token.id,
+          source: token.id
       });
 
       const charge = await stripe.charges.create({
           amount: body.price * 100,
           currency: 'usd',
-          customer: customer.id,
-          receipt_email: user.email,
+          customer: customer.id
       });
 
       if (charge) {
