@@ -230,6 +230,8 @@ userRouter.post('/pay', async (req, res) => {
           amount: body.price * 100,
           currency: 'usd',
           customer: customer.id,
+          receipt_email: user.email,
+          description: body.description,
       });
 
       if (charge) {
