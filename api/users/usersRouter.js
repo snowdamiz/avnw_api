@@ -219,6 +219,7 @@ userRouter.post('/pay', async (req, res) => {
       console.log(customer);
       // console.log(idempotencyKey);
       // console.log(customer);
+      console.log(typeof body.price);
 
       const key = v4();
       const charge = await stripe.charges.create({
