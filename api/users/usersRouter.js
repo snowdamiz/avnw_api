@@ -197,7 +197,7 @@ userRouter.post('/pay', async (req, res) => {
   const { card } = token;
 
   // console.log('here');
-  // console.log(body);
+  console.log(body);
 
   try {
       const customer = await stripe.customers.create({
@@ -218,7 +218,7 @@ userRouter.post('/pay', async (req, res) => {
           currency: "USD",
           customer: customer.id,
           receipt_email: body.user.email,
-          description: `Purchase`,
+          description: 'Purchase',
       }, { idempotencyKey: key });
 
       if (charge) {
