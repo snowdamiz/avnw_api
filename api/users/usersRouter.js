@@ -224,15 +224,13 @@ userRouter.post('/pay', async (req, res) => {
       console.log(customer);
       // console.log(idempotencyKey);
       // console.log(customer);
-      console.log(typeof body.price);
 
-      const key = v4();
+      // const key = v4();
       const charge = await stripe.charges.create({
           amount: body.price * 100,
           currency: 'usd',
           customer: customer.id,
-          receipt_email: body.user.email,
-      }, { idempotencyKey: key });
+      });
 
       if (charge) {
         res.status(202).json(charge);
