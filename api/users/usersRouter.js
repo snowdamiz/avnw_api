@@ -223,10 +223,9 @@ userRouter.post('/pay', async (req, res) => {
       const key = v4();
       const charge = await stripe.charges.create({
           amount: body.price * 100,
-          currency: "USD",
+          currency: 'usd',
           customer: customer.id,
           receipt_email: body.user.email,
-          description: 'Purchase',
       }, { idempotencyKey: key });
 
       if (charge) {
