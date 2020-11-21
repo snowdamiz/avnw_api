@@ -196,10 +196,7 @@ userRouter.post('/pay', async (req, res) => {
   const { user } = body.user;
   const { token } = body.authToken;
   const { card } = token;
-
-  const address = `
-    ${user.address} ${user.unit} ${user.city} ${user.state} ${user.zip}
-  `;
+  
 
   // console.log('here');
   // console.log('=====Body====');
@@ -210,8 +207,9 @@ userRouter.post('/pay', async (req, res) => {
   // console.log(token);
   // console.log('=====Name====');
   // console.log(body.user.name);
-
+  
   try {
+      const address = `${user.address} ${user.unit} ${user.city} ${user.state} ${user.zip}`;
       const customer = await stripe.customers.create({
           email: body.user.email,
           source: token.id,
