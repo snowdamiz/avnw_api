@@ -213,10 +213,13 @@ userRouter.post('/pay', async (req, res) => {
           customer: customer.id
       });
 
+      console.log(customer);
+      console.log(charge);
+
       if (charge) {
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].type === 'service') {
-            try {
+            // try {
               const serviceOrder = await ServiceOrder.create({
                 location: location,
                 date: date,
@@ -229,11 +232,11 @@ userRouter.post('/pay', async (req, res) => {
 
               if (serviceOrder) res.status(202).json(serviceOrder);
               else res.status(400).json({ err: 'Could not create order' })
-            } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+            // } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
           }
 
           if (cart[i].type === 'merch') {
-            try {
+            // try {
               const merchOrder = await MerchOrder.create({
                 status: 'ordered',
                 quantity: cart[i].quantity,
@@ -245,7 +248,7 @@ userRouter.post('/pay', async (req, res) => {
 
               if (merchOrder) res.status(202).json(merchOrder);
               else res.status(400).json({ err: 'Could not create order' })
-            } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+            // } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
           }
         }
       } else res.status(500).json({ err: 'Could not process payment' });
