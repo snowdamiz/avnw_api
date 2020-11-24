@@ -209,7 +209,7 @@ userRouter.post('/pay', async (req, res) => {
   
   try {
       const customer = await stripe.customers.create({
-          email: user.email,
+          email: body.user.email,
           source: token.id
       });
 
