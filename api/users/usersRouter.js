@@ -206,6 +206,8 @@ userRouter.post('/pay', async (req, res) => {
   // console.log(location);
   // console.log(date);
   // console.log(photographer);
+
+  console.log(body);
   
   try {
       const customer = await stripe.customers.create({
