@@ -20,9 +20,9 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      order_number: {
+      payment_token: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       user_id: {
         allowNull: false,

@@ -23,9 +23,9 @@ module.exports = sequelize.define('merchOrders', {
     field: 'quantity',
     type: Sequelize.INTEGER
   },
-  order_number: {
-    field: 'order_number',
-    type: Sequelize.INTEGER,
+  payment_token: {
+    field: 'payment_token',
+    type: Sequelize.STRING,
   },
   user_id: {
     field: 'user_id',

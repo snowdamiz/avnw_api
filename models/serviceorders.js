@@ -23,9 +23,9 @@ module.exports = sequelize.define('serviceOrders', {
     field: 'date',
     type: Sequelize.STRING
   },
-  order_number: {
-    field: 'order_number',
-    type: Sequelize.INTEGER
+  payment_token: {
+    field: 'payment_token',
+    type: Sequelize.STRING
   },
   user_id: {
     field: 'user_id',
