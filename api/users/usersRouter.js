@@ -217,40 +217,40 @@ userRouter.post('/pay', async (req, res) => {
       console.log(charge);
 
       if (charge) {
-        for (let i = 0; i < cart.length; i++) {
-          if (cart[i].type === 'service') {
-            // try {
-              const serviceOrder = await ServiceOrder.create({
-                location: location,
-                date: date,
-                payment_token: charge.balance_transaction,
-                createdAt: new Date(),
-                user_id: user.id,
-                service_id: cart[i].id,
-                photographer_id: photographer.id,
-              })
+        // for (let i = 0; i < cart.length; i++) {
+        //   if (cart[i].type === 'service') {
+        //     // try {
+        //       const serviceOrder = await ServiceOrder.create({
+        //         location: location,
+        //         date: date,
+        //         payment_token: charge.balance_transaction,
+        //         createdAt: new Date(),
+        //         user_id: user.id,
+        //         service_id: cart[i].id,
+        //         photographer_id: photographer.id,
+        //       })
 
-              if (serviceOrder) res.status(202).json(serviceOrder);
-              else res.status(400).json({ err: 'Could not create order' })
-            // } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
-          }
+        //       if (serviceOrder) res.status(202).json(serviceOrder);
+        //       else res.status(400).json({ err: 'Could not create order' })
+        //     // } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+        //   }
 
-          if (cart[i].type === 'merch') {
-            // try {
-              const merchOrder = await MerchOrder.create({
-                status: 'ordered',
-                quantity: cart[i].quantity,
-                payment_token: charge.balance_transaction,
-                user_id: user.id,
-                merch_id: cart[i].id,
-                createdAt: new Date(),
-              })
+        //   if (cart[i].type === 'merch') {
+        //     // try {
+        //       const merchOrder = await MerchOrder.create({
+        //         status: 'ordered',
+        //         quantity: cart[i].quantity,
+        //         payment_token: charge.balance_transaction,
+        //         user_id: user.id,
+        //         merch_id: cart[i].id,
+        //         createdAt: new Date(),
+        //       })
 
-              if (merchOrder) res.status(202).json(merchOrder);
-              else res.status(400).json({ err: 'Could not create order' })
-            // } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
-          }
-        }
+        //       if (merchOrder) res.status(202).json(merchOrder);
+        //       else res.status(400).json({ err: 'Could not create order' })
+        //     // } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+        //   }
+        // }
       } else res.status(500).json({ err: 'Could not process payment' });
   } catch (err) { res.status(500).json({ err: 'Internal server error', err })};
 })
