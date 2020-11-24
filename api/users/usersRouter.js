@@ -194,14 +194,13 @@ userRouter.post('/:id/service-orders', protect, async (req, res) => {
 userRouter.post('/pay', async (req, res) => {
   const { body } = req;
   const { token } = body.authToken;
+  const { user } = body.user;
   const { cart } = body.cart;
   const { price } = body.price;
   const { location } = body.location;
   const { date } = body.date;
   const { photographer } = body.photographer;
 
-  console.log(body);
-  console.log(token);
   console.log(cart);
   console.log(price);
   console.log(location);
@@ -210,7 +209,7 @@ userRouter.post('/pay', async (req, res) => {
   
   try {
       const customer = await stripe.customers.create({
-          email: body.user.email,
+          email: user.email,
           source: token.id
       });
 
