@@ -196,21 +196,6 @@ userRouter.post('/pay', async (req, res) => {
   const { token } = body.authToken;
   const location = `${body.location.city} ${body.location.state}`;
 
-  // const { user } = body.user;
-  // const { cart } = body.cart;
-  // const { price } = body.price;
-  // const { location } = body.location;
-  // const { date } = body.date;
-  // const { photographer } = body.photographer;
-
-  // console.log(cart);
-  // console.log(price);
-  // console.log(location);
-  // console.log(date);
-  // console.log(photographer);
-
-  console.log(body);
-  
   try {
       const customer = await stripe.customers.create({
           email: body.user.email,
@@ -236,13 +221,11 @@ userRouter.post('/pay', async (req, res) => {
                 service_id: body.cart[i].id,
                 photographer_id: body.photographer.id,
               })
-
+              
               if (serviceOrder) res.status(202).json(serviceOrder);
               else res.status(400).json({ err: 'Could not create order' })
             } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
-          }
-
-          if (body.cart[i].type === 'merch') {
+          } else {
             try {
               const merchOrder = await MerchOrder.create({
                 status: 'ORDERED',
