@@ -243,7 +243,7 @@ userRouter.post('/pay', async (req, res) => {
             } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
           }
 
-          if (cart[i].type === 'merch') {
+          if (body.cart[i].type === 'merch') {
             try {
               const merchOrder = await MerchOrder.create({
                 status: 'ORDERED',
