@@ -194,6 +194,8 @@ userRouter.post('/:id/service-orders', protect, async (req, res) => {
 userRouter.post('/pay', async (req, res) => {
   const { body } = req;
   const { token } = body.authToken;
+  const location = body.location.city + body.location.state;
+
   // const { user } = body.user;
   // const { cart } = body.cart;
   // const { price } = body.price;
@@ -208,6 +210,7 @@ userRouter.post('/pay', async (req, res) => {
   // console.log(photographer);
 
   console.log(body);
+  console.log(location);
   
   try {
       const customer = await stripe.customers.create({
@@ -222,8 +225,40 @@ userRouter.post('/pay', async (req, res) => {
       });
 
       if (charge) {
-        res.status(202).json(charge);
-        console.log(charge);
+        for (let i = 0; i < cart.length; i++) {
+          if (body.cart[i].type === 'service') {
+            try {
+              const serviceOrder = await ServiceOrder.create({
+                location: location,
+                date: body.date,
+                payment_token: charge.balance_transaction,
+                createdAt: new Date(),
+                user_id: body.user.id,
+                service_id: body.cart[i].id,
+                photographer_id: body.photographer.id,
+              })
+
+              if (serviceOrder) res.status(202).json(serviceOrder);
+              else res.status(400).json({ err: 'Could not create order' })
+            } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+          }
+
+          if (cart[i].type === 'merch') {
+            try {
+              const merchOrder = await MerchOrder.create({
+                status: 'ORDERED',
+                quantity: body.cart[i].quantity,
+                payment_token: charge.balance_transaction,
+                user_id: body.user.id,
+                merch_id: body.cart[i].id,
+                createdAt: new Date(),
+              })
+
+              if (merchOrder) res.status(202).json(merchOrder);
+              else res.status(400).json({ err: 'Could not create order' })
+            } catch (err) { res.status(500).json({ err: 'Internal Server Error', err })}
+          }
+        }
       } else res.status(500).json({ err: 'Could not process payment' });
   } catch (err) { res.status(500).json({ err: 'Internal server error', err })};
 })
