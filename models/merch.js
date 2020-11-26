@@ -33,8 +33,16 @@ module.exports = sequelize.define('merch', {
     field: 'category',
     type: Sequelize.STRING
   },
-  image: {
-    field: 'image',
+  image1: {
+    field: 'image1',
+    type: Sequelize.STRING
+  },
+  image2: {
+    field: 'image2',
+    type: Sequelize.STRING
+  },
+  image3: {
+    field: 'image3',
     type: Sequelize.STRING
   },
   quantity: {

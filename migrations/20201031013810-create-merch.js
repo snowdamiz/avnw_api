@@ -28,8 +28,16 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      image: {
-        allowNull: false,
+      image1: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      image2: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      image3: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       quantity: {
