@@ -231,6 +231,7 @@ userRouter.post('/pay', async (req, res) => {
                 status: 'ORDERED',
                 quantity: body.cart[i].quantity,
                 payment_token: charge.balance_transaction,
+                size: body.cart[i].size,
                 user_id: body.user.id,
                 merch_id: body.cart[i].id,
                 createdAt: new Date(),
